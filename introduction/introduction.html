@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>introduction</title>
+	<script src="vue.js"></script>
+	<script src="vue-router.js"></script>
+</head>
+<body>
+	<div id="app">
+		<h1>自我介绍</h1>
+		<router-link to="/home">主页</router-link>
+		<router-link to="/name">姓名</router-link>
+		<router-link to="/age">年龄</router-link>
+		<router-link to="/gender">性别</router-link>
+
+		<router-view></router-view>
+		
+	</div>
+
+	<script>
+		var dd = new Date();
+		var year = dd.getFullYear();
+		
+
+		var home = {
+			template:"<h1>这是自我介绍主页！</h1>"
+		}
+		var namepath = {
+			template:"<div><br />姓名:{{uname}}<br />请输入姓名:<input type='text' v-model.lazy='uname'/></div>",
+			data:function(){
+                return {
+                    uname:''
+                }
+            }
+
+		}
+
+		var agepath = {
+			template:"<div><br />年龄:{{age}}<br />请输入出生年份:<input type='text' v-on:change='fun' v-model.lazy='Age'/></div>",
+			data:function(){
+                return {
+                    Age:'',
+                    age:''
+                }
+            },
+            methods:{
+				fun(){
+					if(!isNaN(this.Age)&&this.Age<=year&&this.Age>=year-100){
+						console.log(this.Age)
+						this.age=year-this.Age
+					}else{
+						this.age ='输入有误'
+					}
+				}
+			}
+            
+		}
+		var genderpath = {
+			template:"<div><br />性别:{{sex}}<br /><input type='radio' value='男' name='gender' v-model='sex' />男<input type='radio' value='女' name='gender' v-model='sex' />女</div>",
+			data:function(){
+                return {
+                    sex:'男'
+                }
+            }
+		}
+		var routes = [
+			{path:"/home",component:home},
+			{path:"/name",component:namepath},
+			{path:"/age",component:agepath},
+			{path:"/gender",component:genderpath},
+			{path:"/",component:home},
+			{path:"*",component:home}
+		];
+
+		var router = new VueRouter({
+			routes
+		});
+			
+		
+		new Vue({
+			el:"#app",
+			router,
+			
+			
+		})
+	</script>
+</body>
+</html>
